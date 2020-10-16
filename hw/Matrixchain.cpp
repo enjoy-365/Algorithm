@@ -1,3 +1,4 @@
+//2018008213_KimHyunjung_11802
 #include <iostream>
 #include <climits>
 
@@ -21,7 +22,7 @@ int main(void){
 
     cout << m[1][n] << "\n";
 
-    
+    printParens(1, 6);    
 
     return 0;
 }
@@ -45,6 +46,12 @@ void chainOrder(){
     }
     return;
 }
-void pirntParens(int i, int j){
-
+void printParens(int i, int j){
+    if(i==j) cout << i;
+    else{
+        cout<< "(";
+        printParens(i, s[i][j]);
+        printParens(s[i][j]+1, j);
+        cout << ")";
+    }
 }
