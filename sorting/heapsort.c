@@ -75,9 +75,25 @@ ElementType DeleteMin(PriorityQueue h, FILE* fp2) {
 	ElementType lastElement = h->elementsp[h->size--];
 	
 	//percolating down;
-	for () {
+	int i, child;
+	for (i = 1; (2 * i) <= h->size; i = child) {
+		child = 2 * i;
 
+		//select the min child between right and left
+		if (child != h->size && h->elements[child] > h->elements[child + 1]) {
+			child++;
+		}
+		//if the last element is bigger than the child
+		if (lastElement > h->elements[child]) {
+			h->elements[i] = h->elements[child];
+		}
+		else {
+			break;
+		}
 	}
+	h->elements[i] = lastElement;
+	fprintf(fp2, "deleteMin %d", minElement);
+	return minElement;
 }
 void Print(PriorityQueue h, FILE* fp2);
 int IsFull(PriorityQueue h) {
