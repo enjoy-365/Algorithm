@@ -23,7 +23,9 @@ struct HeapStruct {
 
 PriorityQueue InitHeap(int heapsize);
 void Insert(ElementType x, PriorityQueue h, FILE* fp2);
-int DeleteMin(PriorityQueue h, FILE* fp2);
+void HeapSort(PriorityQueue h, int n);
+void PercDown(PriorityQueue h, int i, int n);
+int DeleteMax(PriorityQueue h, FILE* fp2);
 int Find(ElementType x, PriorityQueue h);
 //int FindRecursive(ElementType x, PriorityQueue h);
 void Print(PriorityQueue h, FILE* fp2);
@@ -36,7 +38,18 @@ int main() {
 	fp1 = fopen("input.txt", "r");
 	fp2 = fopen("output.txt", "w");
 
-	
+	int cnt, n;
+	fscanf(fp1, "%d", &cnt);
+
+	PriorityQueue h = InitHeap(cnt);
+
+	for (int i = 1; i <= cnt; i++) {
+		fscanf(fp1, "%d", &n);
+		h->elements[i] = n;
+	}
+
+
+
 
 
 	fclose(fp1);
@@ -44,7 +57,9 @@ int main() {
 
 	return 0;
 }
+void HeapSort(PriorityQueue h, int n) {
 
+}
 PriorityQueue InitHeap(int heapsize) {
 	PriorityQueue h = (PriorityQueue)malloc(sizeof(struct HeapStruct));
 	h->capacity = heapsize;
@@ -58,33 +73,33 @@ void Insert(ElementType x, PriorityQueue h, FILE* fp2) {
 	}
 	//after testing find -> no identities then, insert.
 	int i;
-	for (i = ++h->size; (h->size >1)&&h->elements[i / 2] > x; i / 2) {
+	for (i = ++h->size; (h->size > 1) && h->elements[i / 2] < x; i / 2) {
 		h->elements[i] = h->elements[i / 2];
 	}
 	h->elements[i] = x;
 	fprintf(fp2, "insert %d\n", x);
 	return;
 }
-ElementType DeleteMin(PriorityQueue h, FILE* fp2) {
+ElementType DeleteMax(PriorityQueue h, FILE* fp2) {
 	if (IsEmpty(h)) {
 		fprintf(fp2, "heap is empty\n");
 		return -1;
 	}
 
-	ElementType minElement = h->elements[1];
-	ElementType lastElement = h->elementsp[h->size--];
-	
+	ElementType maxElement = h->elements[1];
+	ElementType lastElement = h->elements[h->size--];
+
 	//percolating down;
 	int i, child;
-	for (i = 1; (2 * i) <= h->size; i = child) {
+	for (i = 1; (2 * i) >= h->size; i = child) {
 		child = 2 * i;
 
 		//select the min child between right and left
-		if (child != h->size && h->elements[child] > h->elements[child + 1]) {
+		if (child != h->size && h->elements[child] < h->elements[child + 1]) {
 			child++;
 		}
 		//if the last element is bigger than the child
-		if (lastElement > h->elements[child]) {
+		if (lastElement < h->elements[child]) {
 			h->elements[i] = h->elements[child];
 		}
 		else {
@@ -92,10 +107,22 @@ ElementType DeleteMin(PriorityQueue h, FILE* fp2) {
 		}
 	}
 	h->elements[i] = lastElement;
-	fprintf(fp2, "deleteMin %d", minElement);
-	return minElement;
+	fprintf(fp2, "deleteMax %d", maxElement);
+	return maxElement;
 }
-void Print(PriorityQueue h, FILE* fp2);
+int Find(ElementType x, PriorityQueue h) {
+	for (int i = 1; i <= h->size; i++) {
+		if (h->elements[i] == x) {
+			return 1;
+		}
+	}
+	return 0;
+}
+void Print(PriorityQueue h, FILE* fp2) {
+	for (int i = 1; i <= h->size; i++) {
+		fprintf(fp2, "%d ", h->elements[i]);
+	}
+}
 int IsFull(PriorityQueue h) {
 	return h->capacity == h->size;
 }
