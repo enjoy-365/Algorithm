@@ -24,7 +24,7 @@ struct HeapStruct {
 PriorityQueue InitHeap(int heapsize);
 void Insert(ElementType x, PriorityQueue h, FILE* fp2);
 void HeapSort(PriorityQueue h, int n);
-void PercDown(PriorityQueue h, int i, int n);
+void MaxHeapify(PriorityQueue h, int i, int n);
 int DeleteMax(PriorityQueue h, FILE* fp2);
 int Find(ElementType x, PriorityQueue h);
 //int FindRecursive(ElementType x, PriorityQueue h);
@@ -125,6 +125,7 @@ void Print(PriorityQueue h, FILE* fp2) {
 }
 int IsFull(PriorityQueue h) {
 	return h->capacity == h->size;
+
 }
 int IsEmpty(PriorityQueue h) {
 	return h->size == 0;
