@@ -12,10 +12,18 @@ class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
 
-        if (!l1) return l2;
-        if (!l2) return l1;
-
         ListNode* newNode = new ListNode(0);
+        if (!l1 && !l2) return nullptr;
+        if (!l1) {
+            newNode->val = l2->val;
+            newNode->next = mergeTwoLists(nullptr, l2->next);
+            return newNode;
+        }
+        if (!l2) {
+            newNode->val = l1->val;
+            newNode->next = mergeTwoLists(l1->next, nullptr);
+            return newNode;
+        }
 
         if (l1->val <= l2->val) {
             newNode->val = l1->val;
